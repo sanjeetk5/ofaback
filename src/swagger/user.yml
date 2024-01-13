@@ -1,0 +1,222 @@
+paths:
+  /user/create:
+    post:
+      tags:
+        - User
+      summary: Create new user
+      description: Create new user
+      operationId: adduser
+      requestBody:
+        description: Create a new user
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/User"
+        required: true
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Userresponse"
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+                message: Your Registeration is successfull
+  /user/update:
+    post:
+      tags:
+        - User
+      summary: Update existing user
+      description: Update existing user
+      operationId: edituser
+      requestBody:
+        description: Update existing user
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/User"
+        required: true
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Userresponse"
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /user/{userid}:
+    get:
+      tags:
+        - User
+      summary: Find user by id
+      description: Returns a single user
+      operationId: getUserById
+      parameters:
+        - name: userid
+          in: path
+          description: ID of user to return
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Userresponse"
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /user/user-list:
+    get:
+      tags:
+        - User
+      summary: Get users list
+      description: Returns user list
+      operationId: getUsersList
+      parameters:
+        - name: page
+          in: query
+          description: page number for pagination
+          schema:
+            type: string
+        - name: limit
+          in: query
+          description: limit number for pagination
+          schema:
+            type: string
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Userresponse"
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /user/{useri}:
+    delete:
+      tags:
+        - User
+      summary: Delete user by id
+      description: Delete user
+      operationId: deleteUserById
+      parameters:
+        - name: userid
+          in: path
+          description: ID of user to return
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: string
+                    example: true
+                  data:
+                    type: null
+                    example: null
+                  message:
+                    type: string
+                    example: User deleted with id yf8731gf317ri18ryx successfully.
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+components:
+  securitySchemes:
+    bearerAuth: # arbitrary name for the security scheme
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    User:
+      type: object
+      properties:
+        username:
+          type: string
+          example: abhishek123
+        name:
+          type: string
+          example: Ganesh
+        email:
+          type: string
+          example: test@gmail.com
+        password:
+          type: string
+          description: Password should be min 8  length
+          example: nit@gdhjjd
+        age:
+          type: number
+          description: age of user
+          example: 45
+    Userresponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        body:
+          type: object
+          properties:
+            _id:
+              type: integer
+              example: 6789hdg78hddhhw782
+            username:
+              type: string
+              example: Krishna
+            name:
+              type: string
+              example: Yadav
+            email:
+              type: string
+              example: string
+            age:
+              type: string
+              example: 23
+            updatedAt:
+              type: string
+              example: "2022-11-17T05:47:01.221Z"
+            createdAt:
+              type: string
+              example: "2022-11-17T05:47:01.221Z"
+        message:
+          type: string
+          example: Your operation is successfull
+    ErrorResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: false
+        message:
+          type: string
+          example: something went wrong
+        statusCode:
+          type: number
+          example: 400
+        error:
+          type: string
+          example: BadRequest
